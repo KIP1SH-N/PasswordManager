@@ -1,44 +1,32 @@
 import addLog
+import listLog
+import delLog
 from cryptography.fernet import Fernet
 import base64
-
 
 with open("cipher.txt","rb") as f:
     key=f.read()
     cipher=Fernet(key)
 
 fileHide=open("dataPas.txt","r+")
-
-loginPas = {}
 b=1
+print(" add - add login and password \n list - show all data \n close - finish program")
 while b==1:
     a=str(input(""))
     if a=="add":
-        addLog.addLog(loginPas)
-        loginPasStr=str(loginPas)
-        encrypted=cipher.encrypt(loginPasStr.encode())
-        base64Encrypted=base64.b64encode(encrypted).decode()
-        fileHide.write(base64Encrypted)
+        addLog.addLog(fileHide,cipher)
     elif a=="list":
-        fileHide.seek(0)
-        file=fileHide.read()
-        fileDecode=base64.b64decode(file)
-        decrypted=cipher.decrypt(fileDecode)
-        print(decrypted.decode())
+        listLog.listLog(fileHide,cipher)
     elif a=="del":
-        delLog=str(input("Login: "))
-        del(loginPas[delLog])
-        loginPasStr=str(loginPas)
-        encrypted=cipher.encrypt(loginPasStr.encode())
-        base64Encrypted=base64.b64encode(encrypted).decode()
-        fileHide.write(base64Encrypted)
+        delLog.delLog(fileHide,cipher)
     elif a=="close":
         fileHide.close()
         b=0
+        
    
         
         
       
-print("Завершено")
+print("Finish")
     
 
